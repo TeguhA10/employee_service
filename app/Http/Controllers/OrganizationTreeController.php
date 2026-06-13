@@ -12,7 +12,8 @@ class OrganizationTreeController extends Controller
 {
     public function __construct(
         protected UserService $userService
-    ) {}
+    ) {
+    }
 
     /**
      * GET /employees/{id}/org-tree
@@ -20,6 +21,7 @@ class OrganizationTreeController extends Controller
      */
     public function show(int $id): JsonResponse
     {
+        /** @var Employee|null $employee */
         $employee = Employee::with(['branch', 'position'])->find($id);
 
         if (!$employee) {
@@ -37,6 +39,7 @@ class OrganizationTreeController extends Controller
         $currentPosition = $employee->position;
 
         while ($currentPosition && $currentPosition->parent_position_id !== null) {
+            /** @var Position|null $parentPosition */
             $parentPosition = Position::with(['branch'])->find($currentPosition->parent_position_id);
             if (!$parentPosition) {
                 break;
@@ -48,6 +51,7 @@ class OrganizationTreeController extends Controller
                 ->get();
 
             $supervisorsData = [];
+            /** @var Employee $sup */
             foreach ($supervisors as $sup) {
                 $supArr = $sup->toArray();
                 $supArr['user'] = $this->userService->getUserById($sup->user_id);
@@ -71,6 +75,7 @@ class OrganizationTreeController extends Controller
             ->get();
 
         $directReports = [];
+        /** @var Employee $dr */
         foreach ($directReportEmployees as $dr) {
             $drArr = $dr->toArray();
             $drArr['user'] = $this->userService->getUserById($dr->user_id);
