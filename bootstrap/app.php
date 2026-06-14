@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'jwt.auth' => \App\Http\Middleware\JwtAuth::class,
             'jwt.superadmin' => \App\Http\Middleware\JwtSuperAdmin::class,
+            'jwt.adminhrd' => \App\Http\Middleware\JwtAdminHrd::class,
         ]);
 
         $middleware->encryptCookies(except: [

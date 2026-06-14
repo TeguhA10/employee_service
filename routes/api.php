@@ -23,22 +23,22 @@ Route::middleware('jwt.auth')->group(function () {
     Route::get('/employees', [EmployeeController::class, 'index']);
     Route::get('/employees/{id}', [EmployeeController::class, 'show']);
     Route::get('/employees/{id}/org-tree', [OrganizationTreeController::class, 'show']);
-});
 
-// Admin-only write operations
-Route::middleware(['jwt.auth', 'jwt.superadmin'])->group(function () {
-    // Branches Write
-    Route::post('/branches', [BranchController::class, 'store']);
-    Route::put('/branches/{id}', [BranchController::class, 'update']);
-    Route::delete('/branches/{id}', [BranchController::class, 'destroy']);
+    // Admin-only write operations
+    Route::middleware(['jwt.adminhrd'])->group(function () {
+        // Branches Write
+        Route::post('/branches', [BranchController::class, 'store']);
+        Route::put('/branches/{id}', [BranchController::class, 'update']);
+        Route::delete('/branches/{id}', [BranchController::class, 'destroy']);
 
-    // Positions Write
-    Route::post('/positions', [PositionController::class, 'store']);
-    Route::put('/positions/{id}', [PositionController::class, 'update']);
-    Route::delete('/positions/{id}', [PositionController::class, 'destroy']);
+        // Positions Write
+        Route::post('/positions', [PositionController::class, 'store']);
+        Route::put('/positions/{id}', [PositionController::class, 'update']);
+        Route::delete('/positions/{id}', [PositionController::class, 'destroy']);
 
-    // Employees Write
-    Route::post('/employees', [EmployeeController::class, 'store']);
-    Route::put('/employees/{id}', [EmployeeController::class, 'update']);
-    Route::delete('/employees/{id}', [EmployeeController::class, 'destroy']);
+        // Employees Write
+        Route::post('/employees', [EmployeeController::class, 'store']);
+        Route::put('/employees/{id}', [EmployeeController::class, 'update']);
+        Route::delete('/employees/{id}', [EmployeeController::class, 'destroy']);
+    });
 });
